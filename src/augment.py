@@ -1,1 +1,1 @@
-# Augment
+# Augment every image

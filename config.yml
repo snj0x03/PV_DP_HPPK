@@ -1,1 +1,34 @@
-# Config File
+# path
+video-load-path: "raw"
+
+extraction-output-path: "processed/img"
+
+augmentation-load-path: "yolo"
+
+final-output-path: "processed/aug"
+
+
+# frame extraction
+
+fps: 20
+
+frame-rate: 30
+
+interval: 5
+
+max-frames: 90
+
+
+# augmentation
+
+format: "yolo"
+
+flip: 0.5
+rotate-limit: 15
+rotate: 0.5
+noise: 0.30
+
+# output
+
+csv: false
+

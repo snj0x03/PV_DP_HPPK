@@ -6,3 +6,4 @@ from extract import extract_frames
 
 # run extract with specified configuration
 print("Hello")
+print("123")

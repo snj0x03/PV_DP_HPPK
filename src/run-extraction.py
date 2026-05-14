@@ -120,7 +120,7 @@ def extract_frames(
                     is_duplicate = False
  
                 if not is_duplicate:
-                    fname = f"{part_name}-{uuid.uuid4()}.jpg"
+                    fname = f"{part_name}-{uuid.uuid1()}.jpg"
                     cv2.imwrite(os.path.join(save_dir, fname), frame)
                     if hash_threshold is not None:
                         seen_hashes.append(h)

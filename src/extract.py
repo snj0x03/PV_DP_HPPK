@@ -12,7 +12,7 @@ with open("../config.yml", "r") as file:
 
 
 
-def extract_frames(video_path, save_dir, frame_rate, max_frames, hash_threshold, seen_hashes, part_number, image_ID):
+def extract_frames(video_path, save_dir, frame_rate, max_frames, hash_threshold, seen_hashes, part_number):
 
     if seen_hashes is None:
         seen_hashes = []
@@ -20,6 +20,7 @@ def extract_frames(video_path, save_dir, frame_rate, max_frames, hash_threshold,
     cap = cv2.VideoCapture(video_path)
     fps = 30
     interval = max(int(fps * frame_rate * 2), 1)
+    
 
     count, saved = 0, 0
     while True:
@@ -37,7 +38,7 @@ def extract_frames(video_path, save_dir, frame_rate, max_frames, hash_threshold,
                 else:
                     is_duplicate = False
                 if not is_duplicate:
-                    fname = f"{part_number}-{image_ID}.jpg"
+                    fname = f"{part_number}-{saved}.jpg"
                     cv2.imwrite(os.path.join(save_dir, fname), frame)
                     if hash_threshold is not None:
                         seen_hashes.append(h)

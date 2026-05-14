@@ -1,1 +1,1 @@
-# Augment every image
+# Augment function on one image

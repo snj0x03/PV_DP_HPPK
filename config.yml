@@ -1,34 +1,32 @@
-# path
-video-load-path: "raw"
+# ===============================================
+# PVision Data Pipeline
+# ===============================================
 
-extraction-output-path: "processed/img"
-
-augmentation-load-path: "yolo"
-
-final-output-path: "processed/aug"
-
-
-# frame extraction
-
-fps: 20
-
-frame-rate: 30
-
-interval: 5
-
-max-frames: 90
+# -- Paths --------------------------------------
+path:
+  raw_path         : "C:/Users/micha/Capstone/Local/Capstone_Raw_Dataset"                             # input video root folder
+  base_extract_dir : "C:/Users/micha/Capstone/Local/Run-Extracted"                                    # extraction output root (Version_N created here)
+  annotation_dir   : "C:/Users/micha/Capstone/Local/Run-Annotated"                                    # annotated dataset      (YOLO format)
+  aug_dir          : "C:/Users/micha/Capstone/Local/Run-Augmented"                                    # augmentation output root
+  parts_excel      : "C:/Users/micha/Capstone/HP_dataset/AI Parts Finder_Parts List_Jasper_rev.xlsx"  # HP printer part dataset root
 
 
-# augmentation
+# -- Extraction ---------------------------------
+extraction:
+  version_mode     : "new" # "new" = create next Version_N | "latest" = reuse current
+  frame_rate       : 0.25  # seconds per frame (0.25 = 4fps)
+  target_max       : 400   # max frames to extract per part
+  hash_threshold   : null  # perceptual hash threshold for dedup (null = skip)
 
-format: "yolo"
 
-flip: 0.5
-rotate-limit: 15
-rotate: 0.5
-noise: 0.30
+# -- Augmentation -------------------------------
+augmentation:
+  aug_target       : 750   # target image count per part after augmentation
+  aug_min_mult     : 3     # mininmum augmentation multiplier
+  aug_max_mult     : 10    # maximum augmentation multiplier
+  exclude_parts    : []    # list of part folder names to skip 
 
-# output
-
-csv: false
-
+# -- Pipeline Stages ----------------------------
+run:
+  extract          : true  # run frame extraction
+  augmentation     : true  # run augmentation

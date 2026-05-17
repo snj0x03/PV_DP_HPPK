@@ -115,7 +115,9 @@ python src/run_main.py --config config.yml
 - Extracts frames at 4 fps, up to `target_max` per part
 - Output → `Run-Extracted/Version_N/all/` and `individual/PartN/`
 
-### Stage 2 — Augmentation
+### Stage 2 - Annotation
+
+### Stage 3 — Augmentation
 - Reads annotated images from `Run-Annotated/` (YOLO format)
 - Applies flip, brightness, blur, noise, rotate, MixUp, Mosaic
 - Output → `Run-Augmented/`

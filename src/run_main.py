@@ -38,12 +38,21 @@ def load_config(config_path: str) -> dict:
         return yaml.safe_load(f)
 
 
+# ── Path resolver ────────────────────────────────────────────
+def resolve_paths(path_cfg: dict, config_path: str) -> dict:
+    config_dir = os.path.dirname(os.path.abspath(config_path))
+    return {
+        k: os.path.normpath(os.path.join(config_dir, v)) if not os.path.isabs(v) else v
+        for k, v in path_cfg.items()
+    }
+
+
 # ── Main ─────────────────────────────────────────────────────
 def main():
     args   = parse_args()
     cfg    = load_config(args.config)
 
-    PATH_CFG = cfg["path"]
+    PATH_CFG = resolve_paths(cfg["path"], args.config)
     EXT_CFG  = cfg["extraction"]
     AUG_CFG  = cfg["augmentation"]
     RUN_CFG  = cfg["run"]

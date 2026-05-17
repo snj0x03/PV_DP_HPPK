@@ -7,6 +7,7 @@ import cv2
 import os
 import uuid
 import re
+import shutil
 import imagehash
 import pandas as pd
 from PIL import Image
@@ -28,7 +29,7 @@ def load_part_names(excel_path: str) -> dict:
         Dict { part_number (int): SVC Part Number (str) }
         e.g. { 1: "5PN77-67001", 2: ... }
     """
-    df = pd.read_excel(excel_path, headr = 0 )
+    df = pd.read_excel(excel_path, header = 0)
     return {
         int(row[0]): _sanitize(str(row[1]))
         for _, row in df.iterrows()

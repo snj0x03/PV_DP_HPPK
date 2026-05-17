@@ -28,5 +28,7 @@ augmentation:
 
 # -- Pipeline Stages ----------------------------
 run:
-  extract          : true  # run frame extraction
-  augmentation     : true  # run augmentation
+  # run frame extraction
+  extract          : true  
+  # run augmentation
+  augmentation     : false

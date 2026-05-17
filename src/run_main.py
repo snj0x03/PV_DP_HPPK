@@ -2,8 +2,8 @@
 # PVision Data Pipeline - Main Entry Point
 # ============================================================
 # Usage:
-#   python run-main.py
-#   python run-main.py --config config.yml
+#   python run_main.py
+#   python run_main.py --config config.yml
 # ============================================================
 
 import yaml
@@ -24,7 +24,7 @@ def parse_args():
     parser.add_argument(
         "--config",
         type    = str,
-        default = "config.yml",
+        default = os.path.join(os.path.dirname(__file__), "..", "config.yml"),
         help    = "Path to config file (default: config.yml)",
     )
     return parser.parse_args()
@@ -80,7 +80,7 @@ def main():
         print("=" * 60)
 
     # ── Augment ──────────────────────────────────────────────
-    if RUN_CFG.get("augment", False):
+    if RUN_CFG.get("augmentation", False):
         print("▶ STAGE 2 : AUGMENTATION")
         print("-" * 40)
 

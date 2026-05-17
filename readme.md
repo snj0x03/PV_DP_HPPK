@@ -81,7 +81,14 @@ run:
   augmentation  : false   # set to true to run augmentation
 ```
 
-> Paths in `config.yml` are relative — no need to change them on your machine.
+> The default relative paths assume this structure:
+> ```
+> Capstone/
+> ├── PV-DP-HPPK/   ← repo
+> ├── Local/         ← data folders
+> └── HP_dataset/   ← Excel file
+> ```
+> If your folder structure is different, update the paths in `config.yml` to point to your data locations. Absolute paths (e.g. `C:/Users/yourname/...`) are also supported.
 
 ---
 

@@ -4,11 +4,11 @@
 
 # -- Paths --------------------------------------
 path:
-  raw_path         : "../../Local/Capstone_Raw_Dataset"                                               # input video root folder
+  raw_path         : "../../Local/Capstone_Raw_Dataset"                                                # input video root folder
   base_extract_dir : "../../Local/Run-Extracted"                                                       # extraction output root (Version_N created here)
   annotation_dir   : "../../Local/Run-Annotated"                                                       # annotated dataset      (YOLO format)
   aug_dir          : "../../Local/Run-Augmented"                                                       # augmentation output root
-  parts_excel      : "../../HP_dataset/AI Parts Finder_Parts List_Jasper_rev.xlsx"                    # HP printer part dataset root
+  parts_excel      : "../../HP_dataset/AI Parts Finder_Parts List_Jasper_rev.xlsx"                     # HP printer part dataset root
 
 
 # -- Extraction ---------------------------------

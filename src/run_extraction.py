@@ -138,6 +138,32 @@ def setup_extract_dirs(base_extract_dir: str, version_mode: str = "new") -> dict
         "individual_dir": individual_dir,
     }
 
+
+# ── Dual-part folder detection ───────────────────────────────
+
+def _parse_dual_part_folder(folder_name: str):
+    """
+    Detect and parse a dual-part folder name like 'Part19&20(right is 19)'.
+
+    Extracts the first two numbers found in the folder name.
+
+    Args:
+        folder_name : Raw folder name string
+
+    Returns:
+        (part_num_a, part_num_b) as ints, or None if not a dual-part folder
+
+    Example:
+        "Part19&20(right is 19)" → (19, 20)
+    """
+    if "&" not in folder_name:
+        return None
+    numbers = re.findall(r"\d+", folder_name)
+    if len(numbers) >= 2:
+        return int(numbers[0]), int(numbers[1])
+    return None
+
+
 # ── Frame extraction ─────────────────────────────────────────
  
 def extract_frames(
@@ -148,14 +174,14 @@ def extract_frames(
     max_frames: int = None,
     hash_threshold: int = None,
     seen_hashes: list = None,
-) -> int:
+) -> list:
     """
     Extract frames from a single video file.
- 
+
     Saved filename format:
         {part_name}-{uuid4}.jpg
         e.g. SVC_HP-LaserJet-Fuser-220V-Kit-3f2a1b4c-....jpg
- 
+
     Args:
         video_path      : Path to input video file
         save_dir        : Directory to save extracted frames
@@ -164,9 +190,9 @@ def extract_frames(
         max_frames      : Maximum number of frames to extract (None = no limit)
         hash_threshold  : Perceptual hash threshold for dedup (None = skip)
         seen_hashes     : Shared hash list across videos in same part
- 
+
     Returns:
-        Number of frames saved
+        List of saved frame file paths
     """
     if seen_hashes is None:
         seen_hashes = []
@@ -196,8 +222,8 @@ def extract_frames(
  
                 if not is_duplicate:
                     fname = f"{part_name}-{uuid.uuid1()}.jpg"
-                    fpath = os.path.join(save_dir,fname)
-                    cv2.imwrite(os.path.join(save_dir, fname), frame)
+                    fpath = os.path.join(save_dir, fname)
+                    cv2.imwrite(fpath, frame)
                     if hash_threshold is not None:
                         seen_hashes.append(h)
                     saved_paths.append(fpath)
@@ -252,20 +278,28 @@ def run_extract(
             continue
  
         # Resolve part name from folder name
-        part_num  = _part_folder_to_number(part_folder)
-        part_name = part_names.get(part_num, f"Part{part_num}")
- 
-        if part_num is None:
-            print(f"  ⚠️ [{part_folder}] Cannot parse part number. Using folder name.")
-            part_name = _sanitize(part_folder)
-        elif part_num not in part_names:
-            print(f"  ⚠️ [{part_folder}] Part{part_num} not found in Excel. Using fallback name.")
+        dual = _parse_dual_part_folder(part_folder)
+        if dual:
+            num_a, num_b = dual
+            name_a = part_names.get(num_a, f"Part{num_a}")
+            name_b = part_names.get(num_b, f"Part{num_b}")
+            part_name = f"{name_a}-{name_b}"
+            print(f"[{part_folder}] → dual-part folder: {part_name}")
+        else:
+            part_num = _part_folder_to_number(part_folder)
+            if part_num is None:
+                print(f"  ⚠️ [{part_folder}] Cannot parse part number. Using folder name.")
+                part_name = _sanitize(part_folder)
+            elif part_num not in part_names:
+                print(f"  ⚠️ [{part_folder}] Part{part_num} not found in Excel. Using fallback name.")
+                part_name = f"Part{part_num}"
+            else:
+                part_name = part_names[part_num]
+            print(f"[{part_folder}] → {part_name}")
  
         # individual/ subfolder for this part
         dst_individual = os.path.join(individual_dir, part_folder)
         os.makedirs(dst_individual, exist_ok=True)
- 
-        print(f"[{part_folder}] → {part_name}")
  
         part_saved  = 0
         seen_hashes = []

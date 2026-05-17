@@ -1,0 +1,8 @@
+opencv-python
+Pillow
+numpy
+pandas
+openpyxl
+pyyaml
+imagehash
+albumentations

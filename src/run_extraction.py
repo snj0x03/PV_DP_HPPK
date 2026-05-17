@@ -209,9 +209,7 @@ def extract_frames(
  
     cap.release()
     return saved_paths
- 
- 
-# ── Pipeline runner ──────────────────────────────────────────
+
  
 # ── Pipeline runner ──────────────────────────────────────────
  
